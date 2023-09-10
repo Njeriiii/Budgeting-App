@@ -29,17 +29,14 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                  <a class="nav-link" href="/about">About <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="{{ url_for('about') }}">About <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/transactions"> Transactions</a>
+                    <a class="nav-link" href="{{ url_for('transactions') }}"> Transactions</a>
                   </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Insights</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Profile</a>
-                  </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Month
@@ -66,7 +63,7 @@
     <main role="main" class="container">
         <div class="row">
             <div class="col-md-8">
-                {% with message = get_flashed_messages(with_categories=true) %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         {% for category, message in messages %}
                         <div class="alert alert-{{ category }}">
@@ -80,11 +77,16 @@
             <div class="col-md-4">
                 <div class="content-selection">
                     <h3> Our Sidebar</h3>
-                    <a class="btn btn-primary btn-sm" href="/login" role="button">Sign In</a>
+                    {% if current_user.is_authenticated %}
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('account') }}" role="button">Profile</a>
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('logout') }}" role="button">Log Out</a>
+                    {% else %}
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('login') }}" role="button">Sign In</a>
+                    {% endif %}
                     <p class='text-muted'> You can put any information you'd like here
                         <ul>
                             <li class="nav-item">
-                                <a class="link" href="/transactions"> Recent Transactions</a>
+                                <a class="link" href="{{ url_for('transactions') }}"> Recent Transactions</a>
                               </li>
                               <li class="nav-item">
                                 <a class="link" href="#"> etc</a>
